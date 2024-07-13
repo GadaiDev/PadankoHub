@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ひらがなランダム</title>
+    <link rel="stylesheet" href="/File/css/PDNKHubMain.css">
+    <style>
+        @font-face {
+            font-family:HentaiKana ;
+            src: url('/File/UniHentaiKana-Regular.woff') format('woff') ;
+        }
+        .HiraganaRandom_Body {
+            font-family:serif,HentaiKana;
+            font-size: x-large;
+        }
+    </style>
+</head>
+<body>
+    <header style="background-color: rgb(73, 152, 255)">
+        <h1>ひらがなランダム</h1>
+        <a href="/">Home(Padanko Hub)</a>
+
+    </header>
+    <div class="page-body">
+        <h1>ひらがなランダム</h1>
+        <form action="/HiraganaRandom/Result">
+            <input type="submit" value="見る"><input type="text" name="ttl">
+        </form>
+        <hr>
+        <span class="HiraganaRandom_Body">{{ r }}</span>
+    </div>
+</body>
+</html>

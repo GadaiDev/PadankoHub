@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>イベント送信テスト</title>
+    <link rel="stylesheet" href="/File/css/PDNKHubMain.css">
+</head>
+<body>
+    <header style="background-color: #ffd900;">
+        <h1 style="color: rgb(0, 0, 0);">エコーテスト</h1>
+        <a style="color: rgb(0, 0, 0);" href="/">Home(Padanko Hub)</a>
+    </header>
+    <div class="page-body">
+        <h1>エコーテスト</h1>
+        <p id="echoresult"></p>
+        <button id="button">送信</button>
+        <input type="text" id="text">
+    </div>
+    <a href="/Example/post" id="ev_send_url" style="display: none;"></a> <!-- プロキシによって変換される可能性があるため。 -->
+</body>
+<script src="/File/js/jquery.min.js">
+</script>
+<script>
+    $("#button").on("click",()=>{
+        $.post($("#ev_send_url").prop("href"), {text: $("#text").val()}, (data)=>{
+            $("#echoresult").text(data)
+        })
+    })
+</script>
+</html>

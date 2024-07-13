@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PadoPadoDoe</title>
+    <link rel="stylesheet" href="/File/css/PDNKHubMain.css">
+</head>
+<body>
+    <header style="background-color: rgb(36, 38, 172)">
+        <h1>PPD<span style="font-size: x-small;">(PadoPadoDoe)</span></h1>
+        <a href="/">Home(Padanko Hub)</a>
+
+    </header>
+    <div class="page-body">
+        <h1>掲示板</h1>
+        <p>UniOSV 1.0</p><br>
+        <div id="thread">
+
+        </div>
+        <div style="padding: 0px; display: flexbox;">
+            <div style="display: flex; margin:0px; padding:0px;">
+                <input type="button" value="書き込む" class="button_left" class="y2c89b5yr293">
+                <input type="text" class="input_right" placeholder="ハンドルネーム" id="name">
+            </div>
+            <textarea class="textarea_" style="width: 100%; height:200px; margin:0px; padding:0px;" id="text" placeholder="本文"></textarea>
+            <input type="button" value="書き込む" class=" button_bottom y2c89b5yr293 " style="width: 100%; height:100px; margin:0px; padding:0px;">
+            <br>
+            アナウンス音:<input type="checkbox" id="announce" class="button_anker">
+        </div>
+    </div>  
+</body>
+<a href="/File/BBS/thread.json" id="link1" style="display: none;"></a>
+<a href="/bbs/post" id="link2" style="display: none;"></a>
+<audio src="/File/announce/NewPost.mp3" id="NewPostAudio"></audio>
+<script src="/File/js/jquery.min.js"></script>
+<script>
+    function processArray(arr) {
+        if (arr.length > 100) {
+            return arr.slice(-100);
+        } else {
+            return arr;
+        }
+    }
+
+    
+    th_get_url = $("#link1").prop("href");
+    th_post_url = $("#link2").prop("href");
+    obj = []
+
+    setInterval(()=>{
+        $.get(th_get_url, (data)=>{
+            if (obj.length != data.length && $("#announce").prop("checked")) {
+                $("#NewPostAudio")[0].play();
+            }
+            obj = []
+            for (var index = 0; index < data.length; index++) {
+                text = data[index].text.replace("\n","\n<br>");
+                text = text.replace(/&gt;&gt;([0-9]+)/g, '<a href=\'#response$1\' class=\'button_anker\'>⇒$1</a>');
+                text = text.replace(/(https?\:\/\/.+)\n/g, '<a href=\'$1\'>$1</a>');
+                console.log(text)
+                obj[index] = `<dl id='response${index+1}'><dt style='font-size:small;'>${index+1}: ${data[index].name} ${data[index].date}  ID:${data[index]["ID"]}</dt><dd><b>${text}</b></dd></dl>`;
+            }
+            obj = processArray(obj);
+
+
+            $("#thread").html(obj.join("\n"));
+        })
+        
+    },100);
+
+    $(".y2c89b5yr293").click(()=>{
+        $.post(th_post_url, {
+            "name": $("#name").val(),
+            "text": $("#text").val()
+        })
+        $("#text").val("");
+    })
+</script>
+</html>
